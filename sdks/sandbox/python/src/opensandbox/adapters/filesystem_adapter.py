@@ -476,8 +476,8 @@ class FilesystemAdapter(Filesystem):
         Returns:
             Dictionary containing URL, parameters, and headers for the request
         """
-        url = self._get_execd_url(self.FILESYSTEM_DOWNLOAD_PATH)
-        params = {"path": path}
+        encoded_path = quote(path, safe="/")
+        url = f"{self._get_execd_url(self.FILESYSTEM_DOWNLOAD_PATH)}?path={encoded_path}"
         headers: dict[str, str] = {}
 
         if range_header:
@@ -485,6 +485,6 @@ class FilesystemAdapter(Filesystem):
 
         return {
             "url": url,
-            "params": params,
+            "params": {},
             "headers": headers,
         }
